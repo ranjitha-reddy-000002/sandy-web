@@ -1,53 +1,59 @@
 let questions = [];
+let selectedQuestions = [];
 let currentQuestion = 0;
 let coins = 6;
 let hintUsed = false;
 
-// Simulated OTP
-let generatedOTP = '';
+// Load 10 random questions from the JSON
+async function loadQuestions() {
+  const res = await fetch('questions_1000.json');
+  const data = await res.json();
+  shuffleArray(data);
+  selectedQuestions = data.slice(0, 10);
+  showQuestion();
+}
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+// ---- Login + OTP (Mocked) ----
 function sendOTP() {
-  const user = document.getElementById('userInput').value;
-  if (user.trim() === '') {
-    alert('Please enter a phone number or email.');
+  const input = document.getElementById('userInput').value;
+  if (input.trim() === '') {
+    alert("Please enter email or phone.");
     return;
   }
-  generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
-  alert("Your OTP is: " + generatedOTP); // simulate OTP
+  alert("Mock OTP sent: 1234");
   document.getElementById('otp-section').style.display = 'block';
 }
 
 function verifyOTP() {
   const otp = document.getElementById('otpInput').value;
-  if (otp === generatedOTP) {
-    startQuiz();
+  if (otp === '1234') {
+    document.getElementById('login-section').style.display = 'none';
+    document.getElementById('quiz-section').style.display = 'block';
+    loadQuestions();
   } else {
-    alert('Incorrect OTP');
+    alert("Invalid OTP");
   }
 }
 
-function startQuiz() {
-  document.getElementById('login-section').style.display = 'none';
-  document.getElementById('quiz-section').style.display = 'block';
-  fetch('questions_1000.json')
-    .then(response => response.json())
-    .then(data => {
-      questions = shuffle(data).slice(0, 10); // Load 10 random questions
-      loadQuestion();
-    });
-}
-
-function loadQuestion() {
-  const q = questions[currentQuestion];
+// ---- Quiz Logic ----
+function showQuestion() {
+  const q = selectedQuestions[currentQuestion];
   document.getElementById('questionText').textContent = `Q${currentQuestion + 1}: ${q.question}`;
-  document.getElementById('hintText').textContent = '';
   document.getElementById('optionsContainer').innerHTML = '';
+  document.getElementById('hintText').textContent = '';
   hintUsed = false;
 
-  q.options.forEach(opt => {
+  q.options.forEach(option => {
     const btn = document.createElement('button');
-    btn.textContent = opt;
-    btn.onclick = () => checkAnswer(opt);
+    btn.textContent = option;
+    btn.onclick = () => checkAnswer(option);
     document.getElementById('optionsContainer').appendChild(btn);
   });
 
@@ -55,37 +61,35 @@ function loadQuestion() {
 }
 
 function checkAnswer(selected) {
-  const correct = questions[currentQuestion].answer;
+  const correct = selectedQuestions[currentQuestion].answer;
   if (selected === correct) {
     coins += 1;
   }
   currentQuestion++;
-  if (currentQuestion < questions.length) {
-    loadQuestion();
+  if (currentQuestion < selectedQuestions.length) {
+    showQuestion();
   } else {
-    endQuiz();
+    showFinalMessage();
   }
+  document.getElementById('coinCount').textContent = coins;
 }
 
 function showHint() {
   if (hintUsed) return;
-  if (coins < 3) {
-    alert("Not enough coins.");
-    return;
+  if (coins >= 3) {
+    coins -= 3;
+    hintUsed = true;
+    document.getElementById('hintText').textContent = "Hint: " + selectedQuestions[currentQuestion].hint;
+    document.getElementById('coinCount').textContent = coins;
+  } else {
+    alert("Not enough coins for hint!");
   }
-  coins -= 3;
-  hintUsed = true;
-  document.getElementById('coinCount').textContent = coins;
-  document.getElementById('hintText').textContent = "Hint: " + questions[currentQuestion].hint;
 }
 
-function endQuiz() {
-  document.getElementById('questionText').textContent = `Quiz Completed! 🎉 You earned ${coins} coins.`;
-  document.getElementById('optionsContainer').innerHTML = '';
-  document.querySelector('.actions').style.display = 'none';
+function showFinalMessage() {
+  document.querySelector('.quiz-container').innerHTML = `
+    <h3>Quiz Finished 🎉</h3>
+    <p>You earned ${coins} coins.</p>
+  `;
 }
-
-// Utility: Shuffle
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
+d
