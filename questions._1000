@@ -1,0 +1,14 @@
+[
+  {
+    "question": "What is the capital of France?",
+    "options": ["Paris", "Rome", "Madrid", "Berlin"],
+    "answer": "Paris",
+    "hint": "It's called the City of Light"
+  },
+  {
+    "question": "What is 5 + 7?",
+    "options": ["10", "11", "12", "13"],
+    "answer": "12",
+    "hint": "More than 11, less than 13"
+  }
+]
