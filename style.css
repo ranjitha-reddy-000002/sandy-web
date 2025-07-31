@@ -1,57 +1,50 @@
 body {
   font-family: Arial, sans-serif;
-  background: #f4f4f4;
   margin: 0;
-  padding: 0;
+  padding: 20px;
+  background: #f0f4f7;
+}
+.header {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
+  justify-content: space-between;
+  align-items: center;
 }
-
-#login-section, #game-section {
+.coins {
+  font-size: 1.2em;
+  font-weight: bold;
+  background: gold;
+  padding: 8px 15px;
+  border-radius: 10px;
+}
+.quiz-container {
+  max-width: 600px;
+  margin: 40px auto;
   background: white;
-  padding: 20px 30px;
-  margin-top: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 90%;
-  max-width: 400px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-
-input[type="text"], input[type="number"] {
-  width: 100%;
+.question {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+.options button {
+  display: block;
+  margin: 10px 0;
   padding: 10px;
-  margin-top: 8px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  padding: 10px 16px;
-  background-color: #007BFF;
-  border: none;
-  color: white;
-  border-radius: 4px;
+  width: 100%;
+  font-size: 1em;
   cursor: pointer;
-  margin-top: 5px;
 }
-
-button:hover {
-  background-color: #0056b3;
-}
-
-h2, h3 {
-  color: #333;
-}
-
-#question-box {
-  margin-top: 20px;
-}
-
-#hint-text {
-  color: #888;
-  font-style: italic;
+.hint {
+  color: #0077cc;
   margin-top: 10px;
 }
+.actions {
+  margin-top: 20px;
+}
+.actions button {
+  margin-right: 10px;
+  padding: 10px 15px;
+}
+
