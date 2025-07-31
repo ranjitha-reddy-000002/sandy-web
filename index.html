@@ -1,43 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Quiz Game</title>
   <meta charset="UTF-8" />
-  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz Game with Coins</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Login Section -->
-  <div id="login-section">
-    <h2>Login with Phone</h2>
-    <input type="text" id="phoneNumber" placeholder="+91XXXXXXXXXX" />
-    <div id="recaptcha-container"></div>
-    <button onclick="sendOTP()">Send OTP</button>
+<div class="header">
+  <h2>Quiz Game</h2>
+  <div class="coins">Coins: <span id="coinCount">0</span></div>
+</div>
 
-    <div id="otp-section" style="display:none;">
-      <input type="text" id="otpCode" placeholder="Enter OTP" />
-      <button onclick="verifyOTP()">Verify OTP</button>
+<div class="quiz-container">
+  <div id="questionContainer">
+    <div class="question" id="questionText"></div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="hint" id="hintText"></div>
+    <div class="actions">
+      <button onclick="showHint()">Get Hint (3 coins)</button>
     </div>
   </div>
+</div>
 
-  <!-- Game Section -->
-  <div id="game-section" style="display:none;">
-    <div style="display: flex; justify-content: space-between;">
-      <h3 id="welcome"></h3>
-      <h3>Coins: <span id="coinCount">10</span></h3>
-    </div>
-    <div id="question-box">
-      <p id="question-text">Loading...</p>
-      <button onclick="showHint()">Hint (-3 coins)</button>
-      <p id="hint-text" style="display:none; font-style: italic;"></p>
-      <input type="text" id="userAnswer" placeholder="Your answer" />
-      <button onclick="submitAnswer()">Submit Answer</button>
-    </div>
-  </div>
+<script src="script.js"></script>
 
-  <script src="script.js"></script>
 </body>
 </html>
