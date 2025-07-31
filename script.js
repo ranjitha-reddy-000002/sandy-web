@@ -1,144 +1,118 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBt08Yg5p92V9RZoPyF9a8ib23QlcaqGw8",
-  authDomain: "sandy-auth-37c6a.firebaseapp.com",
-  projectId: "sandy-auth-37c6a",
-  storageBucket: "sandy-auth-37c6a.firebasestorage.app",
-  messagingSenderId: "1016034907815",
-  appId: "1:1016034907815:web:404d500a50eebc70f96d82",
-  measurementId: "G-X2T1HVDTSK"
-};
-
-// Initialize Firebase
-// 🔑 Your Firebase config — replace these values
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-let userPhone = "";
-let coinCount = 10;
-let currentQuestionIndex = 0;
-
-// Example questions
 const questions = [
   {
-    question: "What is the capital of India?",
-    answer: "Delhi",
-    hint: "It's not Mumbai."
+    question: "What is the capital of France?",
+    options: ["Paris", "Rome", "Madrid", "Berlin"],
+    answer: "Paris",
+    hint: "It's also called the City of Light."
   },
   {
-    question: "What color is the sky?",
-    answer: "Blue",
-    hint: "Same as the ocean."
+    question: "What is 5 + 7?",
+    options: ["10", "12", "14", "11"],
+    answer: "12",
+    hint: "It’s more than 11 but less than 13."
+  },
+  {
+    question: "Which planet is known as the Red Planet?",
+    options: ["Earth", "Venus", "Mars", "Jupiter"],
+    answer: "Mars",
+    hint: "It’s named after the Roman god of war."
+  },
+  {
+    question: "What is the chemical symbol for water?",
+    options: ["O2", "H2O", "CO2", "HO"],
+    answer: "H2O",
+    hint: "It contains hydrogen and oxygen."
+  },
+  {
+    question: "Who wrote 'Hamlet'?",
+    options: ["Charles Dickens", "Mark Twain", "Shakespeare", "Jane Austen"],
+    answer: "Shakespeare",
+    hint: "Famous English playwright from the 1600s."
+  },
+  {
+    question: "Which continent is the Sahara Desert in?",
+    options: ["Asia", "Africa", "Australia", "South America"],
+    answer: "Africa",
+    hint: "It's the second-largest continent."
+  },
+  {
+    question: "What gas do plants absorb from the atmosphere?",
+    options: ["Oxygen", "Carbon Monoxide", "Nitrogen", "Carbon Dioxide"],
+    answer: "Carbon Dioxide",
+    hint: "It’s the gas humans exhale."
+  },
+  {
+    question: "What is the boiling point of water in Celsius?",
+    options: ["90°C", "100°C", "110°C", "120°C"],
+    answer: "100°C",
+    hint: "It’s a perfect round number."
+  },
+  {
+    question: "Which organ pumps blood through the body?",
+    options: ["Liver", "Heart", "Lungs", "Kidney"],
+    answer: "Heart",
+    hint: "It’s also a symbol of love."
   }
-  // Add more as needed
 ];
 
-// Send OTP
-function sendOTP() {
-  userPhone = document.getElementById("phoneNumber").value;
-  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-    size: 'normal'
+let currentQuestion = 0;
+let coins = 0;
+let hintUsed = false;
+
+const coinDisplay = document.getElementById('coinCount');
+const questionText = document.getElementById('questionText');
+const optionsContainer = document.getElementById('optionsContainer');
+const hintText = document.getElementById('hintText');
+
+function updateUI() {
+  const q = questions[currentQuestion];
+  questionText.textContent = `Q${currentQuestion + 1}: ${q.question}`;
+  hintText.textContent = "";
+  optionsContainer.innerHTML = "";
+
+  q.options.forEach(option => {
+    const btn = document.createElement('button');
+    btn.textContent = option;
+    btn.onclick = () => checkAnswer(option);
+    optionsContainer.appendChild(btn);
   });
 
-  auth.signInWithPhoneNumber(userPhone, window.recaptchaVerifier)
-    .then(confirmationResult => {
-      window.confirmationResult = confirmationResult;
-      alert("OTP sent");
-      document.getElementById("otp-section").style.display = "block";
-    })
-    .catch(error => alert(error.message));
+  hintUsed = false;
 }
 
-// Verify OTP
-function verifyOTP() {
-  const code = document.getElementById("otpCode").value;
-  confirmationResult.confirm(code)
-    .then(result => {
-      alert("Login successful");
-      startGame(result.user.phoneNumber);
-    })
-    .catch(error => alert("Invalid OTP"));
+function checkAnswer(selected) {
+  const correct = questions[currentQuestion].answer;
+  if (selected === correct) {
+    coins += 1;
+    coinDisplay.textContent = coins;
+  }
+
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    updateUI();
+  } else {
+    showFinalMessage();
+  }
 }
 
-// Start Game
-function startGame(phone) {
-  document.getElementById("login-section").style.display = "none";
-  document.getElementById("game-section").style.display = "block";
-  document.getElementById("welcome").innerText = `Welcome ${phone}`;
-  updateCoins();
-  showQuestion();
-}
-
-// Show Question
-function showQuestion() {
-  const q = questions[currentQuestionIndex];
-  document.getElementById("question-text").innerText = q.question;
-  document.getElementById("userAnswer").value = "";
-  document.getElementById("hint-text").style.display = "none";
-  document.getElementById("hint-text").innerText = q.hint;
-}
-
-// Show Hint
 function showHint() {
-  if (coinCount < 3) {
-    alert("Not enough coins for hint.");
-    return;
-  }
-  coinCount -= 3;
-  updateCoins();
-  document.getElementById("hint-text").style.display = "block";
-}
-
-// Submit Answer
-function submitAnswer() {
-  const userInput = document.getElementById("userAnswer").value.trim().toLowerCase();
-  const correctAnswer = questions[currentQuestionIndex].answer.toLowerCase();
-
-  if (userInput === correctAnswer) {
-    coinCount += 1;
-    alert("Correct! +1 coin");
+  if (hintUsed) return;
+  if (coins >= 3) {
+    coins -= 3;
+    coinDisplay.textContent = coins;
+    hintText.textContent = "Hint: " + questions[currentQuestion].hint;
+    hintUsed = true;
   } else {
-    alert("Wrong answer");
-  }
-
-  updateCoins();
-
-  // Save answer to Firebase
-  db.collection("gameResponses").add({
-    phone: userPhone,
-    question: questions[currentQuestionIndex].question,
-    userAnswer: userInput,
-    correct: userInput === correctAnswer,
-    timestamp: new Date()
-  });
-
-  currentQuestionIndex++;
-  if (currentQuestionIndex < questions.length) {
-    showQuestion();
-  } else {
-    alert("Game Over!");
-    document.getElementById("question-box").innerHTML = "<h3>Thanks for playing!</h3>";
+    alert("Not enough coins for a hint!");
   }
 }
 
-// Update Coins on screen
-function updateCoins() {
-  document.getElementById("coinCount").innerText = coinCount;
+function showFinalMessage() {
+  questionText.textContent = `Quiz Completed! 🎉 You earned ${coins} coins.`;
+  optionsContainer.innerHTML = "";
+  hintText.textContent = "";
+  document.querySelector(".actions").style.display = "none";
 }
+
+// Initialize
+updateUI();
