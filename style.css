@@ -1,50 +1,41 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
+  background: #f4f4f4;
   padding: 20px;
-  background: #f0f4f7;
+}
+input {
+  padding: 10px;
+  width: 300px;
+  margin: 5px 0;
+}
+button {
+  padding: 10px 15px;
+  margin: 5px 0;
+  cursor: pointer;
 }
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 .coins {
-  font-size: 1.2em;
-  font-weight: bold;
   background: gold;
-  padding: 8px 15px;
+  padding: 10px;
   border-radius: 10px;
+  font-weight: bold;
 }
 .quiz-container {
-  max-width: 600px;
-  margin: 40px auto;
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
+  background: #fff;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-.question {
-  font-size: 1.2em;
-  margin-bottom: 20px;
 }
 .options button {
   display: block;
   margin: 10px 0;
-  padding: 10px;
   width: 100%;
-  font-size: 1em;
-  cursor: pointer;
 }
 .hint {
-  color: #0077cc;
   margin-top: 10px;
+  color: #0077cc;
 }
-.actions {
-  margin-top: 20px;
-}
-.actions button {
-  margin-right: 10px;
-  padding: 10px 15px;
-}
-
