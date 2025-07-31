@@ -1,43 +1,57 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f4f8;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  align-items: flex-start;
+  min-height: 100vh;
 }
 
-.container {
+#login-section, #game-section {
   background: white;
-  padding: 2rem;
+  padding: 20px 30px;
+  margin-top: 40px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
 }
 
-input {
-  padding: 0.5rem;
-  font-size: 1rem;
-  margin-top: 1rem;
+input[type="text"], input[type="number"] {
   width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 button {
-  margin-top: 1rem;
-  padding: 0.7rem 1.5rem;
-  font-size: 1rem;
-  background-color: #007bff;
-  color: white;
+  padding: 10px 16px;
+  background-color: #007BFF;
   border: none;
+  color: white;
   border-radius: 4px;
   cursor: pointer;
+  margin-top: 5px;
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
-#response {
-  margin-top: 1rem;
-  color: green;
+h2, h3 {
+  color: #333;
+}
+
+#question-box {
+  margin-top: 20px;
+}
+
+#hint-text {
+  color: #888;
+  font-style: italic;
+  margin-top: 10px;
 }
