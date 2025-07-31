@@ -1,41 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quiz Game</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+<div class="header">
+  <h2>Quiz Game</h2>
+  <div class="coins">Coins: <span id="coinCount">0</span></div>
+</div>
 
-  <!-- LOGIN SECTION -->
-  <div id="login-section">
-    <h2>Login</h2>
-    <input type="text" id="userInput" placeholder="Enter Email or Phone Number" />
-    <button onclick="sendOTP()">Send OTP</button>
-    <div id="otp-section" style="display: none;">
-      <input type="text" id="otpInput" placeholder="Enter OTP" />
-      <button onclick="verifyOTP()">Verify OTP</button>
+<div class="quiz-container">
+  <div id="questionContainer">
+    <div class="question" id="questionText"></div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="hint" id="hintText"></div>
+    <div class="actions">
+      <button onclick="showHint()">Get Hint (3 coins)</button>
     </div>
   </div>
+</div>
 
-  <!-- QUIZ SECTION -->
-  <div id="quiz-section" style="display: none;">
-    <div class="header">
-      <h2>Quiz Game</h2>
-      <div class="coins">Coins: <span id="coinCount">6</span></div>
-    </div>
+<script src="script.js"></script>
 
-    <div class="quiz-container">
-      <div class="question" id="questionText"></div>
-      <div class="options" id="optionsContainer"></div>
-      <div class="hint" id="hintText"></div>
-      <div class="actions">
-        <button onclick="showHint()">Get Hint (3 coins)</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
 </body>
 </html>
